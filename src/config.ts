@@ -7,7 +7,7 @@ import type {
 import { LinkPreset } from './types/config'
 
 export const siteConfig: SiteConfig = {
-  title: '克拉拉',
+  title: '克拉拉寫城事',
   subtitle: '前端 / 遊記 / 手工藝',
   lang: 'zh_TW',
   themeHue: 300,
@@ -18,16 +18,12 @@ export const siteConfig: SiteConfig = {
 }
 
 export const navBarConfig: NavBarConfig = {
-  links: [
-    LinkPreset.Home,
-    LinkPreset.Archive,
-    LinkPreset.About,
-  ],
+  links: [LinkPreset.Home, LinkPreset.Archive, LinkPreset.About],
 }
 
 export const profileConfig: ProfileConfig = {
   avatar: 'assets/images/avatar.png',
-  name: '克拉拉',
+  name: '克拉拉寫城事',
   bio: '前端 / 遊記 / 手工藝',
   links: [
     {
