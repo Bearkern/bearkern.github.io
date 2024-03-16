@@ -3,7 +3,7 @@ title: 一個部落格的誕生，為什麼開始寫部落格？
 published: 2024-03-16
 description: '我為什麼寫部落格？又用了哪些資源？'
 image: ''
-tags: [Astro, Hexo, JS 地下城, GitHub Action]
+tags: [Astro, Hexo, JS 地下城, GitHub Actions]
 category: 'JavaScript'
 draft: false 
 ---
