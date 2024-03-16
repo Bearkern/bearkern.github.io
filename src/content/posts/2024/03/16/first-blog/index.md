@@ -3,8 +3,8 @@ title: 一個部落格的誕生，為什麼開始寫部落格？
 published: 2024-03-16
 description: '我為什麼寫部落格？又用了哪些資源？'
 image: ''
-tags: [Astro, Hexo, JS 地下城, GitHub Actions]
-category: 'JavaScript'
+tags: [Astro, Hexo, GitHub Pages, GitHub Actions]
+category: ''
 draft: false 
 ---
 
@@ -25,11 +25,10 @@ draft: false
 將 theme 客製成自己的 blog 後，部署到 `Github Pages`，為了部署方便，使用了 `GitHub Actions`。第一次使用 `GitHub Actions`，想說按照 Astro 官網所提供的 [Configure a GitHub Action](https://docs.astro.build/en/guides/deploy/github/#configure-a-github-action) 就能成功部署了吧！？
 
 沒想到在部署的過程中頻頻發生錯誤，看了一下錯誤都是 `node.js`, `pnpm` 版本的問題。
-
 > ![deploy error](https://firebasestorage.googleapis.com/v0/b/clara-blog.appspot.com/o/1_deploy_error.png?alt=media&token=6eaa2969-56fe-4d32-8189-aad2af4ba0ff "deploy error")
 
 照著錯誤指示升級了版本，又發生了新的錯誤，但照著這個錯誤提示 `Process completed with exit code 1.` google 根本找不到解法。
-> ![exit code](https://firebasestorage.googleapis.com/v0/b/clara-blog.appspot.com/o/1_deploy_error.png?alt=media&token=6eaa2969-56fe-4d32-8189-aad2af4ba0ff "exit code")
+> ![exit code](https://firebasestorage.googleapis.com/v0/b/clara-blog.appspot.com/o/1_exit_code_1.png?alt=media&token=0d797e33-34af-4a83-8f2f-fda0e8e81967 "exit code")
 
 在問了六角的同學後，才知道原來錯誤發生在 build 展開後細節的 333 行，`Could not find Sharp. Please install Sharp...`
 > ![exit code](https://firebasestorage.googleapis.com/v0/b/clara-blog.appspot.com/o/1_sharp_install.png?alt=media&token=64e199b6-ecd8-41ba-bd3f-a8cc17e229cf "exit code")
