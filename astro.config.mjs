@@ -1,7 +1,12 @@
+import fs from 'node:fs'
+import mdx from '@astrojs/mdx'
 import svelte from '@astrojs/svelte'
 import tailwind from '@astrojs/tailwind'
+import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import swup from '@swup/astro'
 import Compress from 'astro-compress'
+import astroExpressiveCode, { ExpressiveCodeTheme } from 'astro-expressive-code'
 import icon from 'astro-icon'
 import { defineConfig, passthroughImageService } from 'astro/config'
 import Color from 'colorjs.io'
@@ -10,6 +15,13 @@ import rehypeKatex from 'rehype-katex'
 import rehypeSlug from 'rehype-slug'
 import remarkMath from 'remark-math'
 import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs'
+
+// Load your saved theme JSONC file here and create a theme from it
+const jsoncString = fs.readFileSync(
+  new URL('./github-dark.jsonc', import.meta.url),
+  'utf-8',
+)
+const githubDark = ExpressiveCodeTheme.fromJSONString(jsoncString)
 
 const oklchToHex = str => {
   const DEFAULT_HUE = 250
@@ -48,6 +60,19 @@ export default defineConfig({
       Image: false,
     }),
     svelte(),
+    astroExpressiveCode({
+      themes: [githubDark],
+      plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
+      styleOverrides: {
+        // You can optionally override the plugin's default styles here
+        collapsibleSections: {
+          closedBackgroundColor: '#35465b7a',
+          closedTextColor: '#888',
+          openBackgroundColor: '#35465b7a',
+        },
+      },
+    }),
+    mdx(),
   ],
   markdown: {
     remarkPlugins: [remarkMath, remarkReadingTime],
