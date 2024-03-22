@@ -1,0 +1,200 @@
+---
+title: JS 地下城 1F - 九九乘法表
+published: 2024-03-17
+description: 'JS 地下城 1F。用原生 JS 寫九九乘法表，並以六角學院所提供的版型切版'
+image: 'https://firebasestorage.googleapis.com/v0/b/clara-blog.appspot.com/o/2_design_layout.png?alt=media&token=09533666-458c-4ffb-b846-764e003b92cd'
+tags: [Front-end, JavaScript, Vanilla.js, Demo, JS地下城, Bootstrap 5, ES6]
+category: 'JavaScript'
+draft: false 
+---
+
+## 前言
+挑戰內容是要使用 JavaScript `for` 迴圈技巧將九九乘法表的算式印在畫面上。大學的時候就寫過九九乘法表，印象中是要用雙迴圈來處理，覺得程式部分不難，比較花時間的是要將畫面刻得與設計稿一致。
+
+因此，我先將畫面刻出來，乘法算式部分先用 HTML 寫出 mock 內容，以便於稍後使用 JavaScript 將 HTML 架構以動態方式組成並印出於畫面中。
+
+## 使用技術
+- 畫面：
+
+    原先要使用手刻的方式將畫面刻出來，刻了一下發覺會不斷用到 `flex` 來排版，自己寫 utilities 較花時間。因此放棄手刻，直接使用 Bootstrap 5 的 `utilities`。
+- 程式：
+
+    使用 JavaScript `for` 迴圈及 `ES6` 語法。
+
+## 畫面撰寫
+### 設計稿
+><img src="https://firebasestorage.googleapis.com/v0/b/clara-blog.appspot.com/o/2_design_layout.png?alt=media&token=09533666-458c-4ffb-b846-764e003b92cd" alt="設計稿" width="500px"/>
+
+### 畫面拆解及實作
+- 預計將最外層架構拆解成九宮格，使用 `ul>li*9` 排版。
+    ><img src="https://firebasestorage.googleapis.com/v0/b/clara-blog.appspot.com/o/2_layout_scaffold.png?alt=media&token=07c9065d-9de3-4f2a-908f-b5302bf35ff9" alt="九宮格架構" width="500px"/>
+
+- 將標題及第一個被乘數先 mock 寫在畫面上，方便觀看及調整樣式。
+    ><img src="https://firebasestorage.googleapis.com/v0/b/clara-blog.appspot.com/o/2_mock_multiplicand.png?alt=media&token=0a9ff387-fa14-46fb-adc3-54bf76908718" alt="第一個被乘數"/>
+    
+
+  ```html title="index.html"
+  <ul
+    class="row row-cols-1 row-cols-md-2 row-cols-lg-3 pt-5 pb-5 list-unstyled"
+    id="multiChart"
+  >
+    <li
+      class="col d-flex flex-column justify-content-between"
+      style="height: 366px"
+    >
+      <div
+        class="position-relative d-flex justify-content-between align-items-center text-success fs-4"
+      >
+        <span>×</span>
+        <span class="deco-line"></span>
+        <span>×</span>
+      </div>
+      <h1 class="text-center text-success">
+        <span class="display-4 fw-bold d-block">九九乘法表</span>
+        <span class="fw-normal fs-4">MULTIPLICATION CHART</span>
+      </h1>
+      <div
+        class="position-relative d-flex justify-content-between align-items-center text-success fs-4"
+      >
+        <span>×</span>
+        <span class="deco-line"></span>
+        <span>×</span>
+      </div>
+    </li>
+    <li class="col">
+      <ul class="multi-area">
+        <li class="multiplicand"><span>2</span></li>
+        <li>2 × 1 = 2</li>
+        <li>2 × 2 = 4</li>
+        <li>2 × 3 = 6</li>
+        <li>2 × 4 = 8</li>
+        <li>2 × 5 = 10</li>
+        <li>2 × 6 = 12</li>
+        <li>2 × 7 = 14</li>
+        <li>2 × 8 = 16</li>
+        <li>2 × 9 = 18</li>
+      </ul>
+    </li>
+  </ul>
+  ```
+
+- 樣式設定。
+  ```css title="_index.scss"
+  ul {
+    margin-bottom: 0;
+  }
+
+  .deco-line {
+    height: 1px;
+    width: calc(100% - 40px);
+    background-color: #2EB738;
+  }
+
+  .multi-area {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: space-between;
+    height: 366px;
+    border-radius: 100px 0 30px 0;
+    background-color: #fff;
+    padding: 64px 40px;
+    margin-bottom: 40px;
+    box-shadow: 0px 3px 10px #d8d8d8;
+    list-style: none;
+    font-size: 24px;
+    color: #2EB738;
+    li {
+      line-height: 1;
+      margin-bottom: 8px;
+      &.multiplicand {
+        font-size: 128px;
+        line-height: 106px;
+        font-weight: bold;
+        text-align: center;
+        text-shadow: 2px 2px $white, 6px 5px 0 $gray-100;
+        span {
+          line-height: 100px;
+          vertical-align: top;
+        }
+      }
+    }
+  }
+  ```
+
+## 程式撰寫
+使用 JavaScript 將 mock 被乘數 HTML 內容跑迴圈印出。
+
+- 被乘數 HTML 結構：
+  ```html title="index.html" collapse={5-27}
+  <ul
+    class="row row-cols-1 row-cols-md-2 row-cols-lg-3 pt-5 pb-5 list-unstyled"
+    id="multiChart"
+  >
+    <li
+      class="col d-flex flex-column justify-content-between"
+      style="height: 366px"
+    >
+      <div
+        class="position-relative d-flex justify-content-between align-items-center text-success fs-4"
+      >
+        <span>×</span>
+        <span class="deco-line"></span>
+        <span>×</span>
+      </div>
+      <h1 class="text-center text-success">
+        <span class="display-4 fw-bold d-block">九九乘法表</span>
+        <span class="fw-normal fs-4">MULTIPLICATION CHART</span>
+      </h1>
+      <div
+        class="position-relative d-flex justify-content-between align-items-center text-success fs-4"
+      >
+        <span>×</span>
+        <span class="deco-line"></span>
+        <span>×</span>
+      </div>
+    </li>
+    <li class="col">
+      <ul class="multi-area">
+        <li class="multiplicand"><span>2</span></li>
+        <li>2 × 1 = 2</li>
+        <li>2 × 2 = 4</li>
+        <li>2 × 3 = 6</li>
+        <li>2 × 4 = 8</li>
+        <li>2 × 5 = 10</li>
+        <li>2 × 6 = 12</li>
+        <li>2 × 7 = 14</li>
+        <li>2 × 8 = 16</li>
+        <li>2 × 9 = 18</li>
+      </ul>
+    </li>
+  </ul>
+  ```
+
+- 使用 `for` 迴圈將 `index.html` 28 ~ 41 行 mock 片段以字串加變數組成，即可跑出完整的九九乘法表。確認樣式沒問題就可以刪掉或註解 mock 片段了。
+
+  ```js title="script.js"
+  const multiChart = document.getElementById('multiChart');
+
+  for (let x = 2; x < 10; x++) {
+    const multiWrapper = document.createElement('li');
+    multiWrapper.setAttribute('class', 'col');
+
+    const multiArea = document.createElement('ul');
+    multiArea.setAttribute('class', 'multi-area')
+    multiArea.innerHTML = `<li class="multiplicand"><span>${x}</span></li>`;
+
+    for (let y = 1; y < 10; y++) {
+      multiArea.innerHTML += `<li>${x} × ${y} = ${x * y}</li>`;
+      multiWrapper.appendChild(multiArea);
+    }
+
+    multiChart.appendChild(multiWrapper);
+  }
+  ```
+  
+## 完整程式碼及 Demo
+[GitHub Repository](https://github.com/Bearkern/multiplication-chart)
+
+[GitHub Page](https://bearkern.github.io/multiplication-chart/)
