@@ -8,6 +8,7 @@ import ImageWrapper from "@components/misc/ImageWrapper.astro";
 import {pathsEqual} from "@utils/url-utils";
 import ConfigCarrier from "@components/ConfigCarrier.astro";
 import {siteConfig} from "@/config";
+import { getEntryBySlug } from 'astro:content';
 
 interface Props {
 	title: string;
@@ -61,6 +62,9 @@ if (title) {
 	pageTitle = `${siteConfig.title} - ${siteConfig.subtitle}`;
 }
 
+const slug = Astro.params.slug;
+const blogPostEntry = await getEntryBySlug('posts', `${slug}`);
+
 ---
 
 <!DOCTYPE html>
@@ -70,9 +74,11 @@ if (title) {
 		<title>{pageTitle}</title>
 
 		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description">
+		<meta name="description" content={blogPostEntry?.slug !== undefined ? `${blogPostEntry.data.description}` : '克拉拉的個人部落格'}>
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+		<meta property="og:image" content={blogPostEntry?.slug !== undefined ? `${blogPostEntry.data.image}` : `/assets/images/banner.jpg`} />
+		<meta property="twitter:image" content={blogPostEntry?.slug !== undefined ? `${blogPostEntry.data.image}` : `/assets/images/banner.jpg`} />
 		<link rel="icon" media="(prefers-color-scheme: light)" href="/favicon/favicon-light-32.png" sizes="32x32">
 		<link rel="icon" media="(prefers-color-scheme: light)" href="/favicon/favicon-light-128.png" sizes="128x128">
 		<link rel="icon" media="(prefers-color-scheme: light)" href="/favicon/favicon-light-180.png" sizes="180x180">
